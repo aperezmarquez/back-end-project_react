@@ -41,6 +41,12 @@ const updateUser = async (req, res) => {
     try {
         const {mail, ...body} = matchedData(req)
         const data = await usersModel.findOneAndUpdate({mail:mail}, body, {returnOriginal: false})
+
+        if (!data) {
+            handleHttpError(res, "USER_NOT_UPDATED", 403)
+            return
+        }
+
         res.send({data})
     } catch (err) {
         console.log(err)

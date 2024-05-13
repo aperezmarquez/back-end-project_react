@@ -51,6 +51,11 @@ const updateItem = async (req, res) => {
         const { cif, ...body } = matchedData(req)
         
         const data =  await commerceModel.findOneAndUpdate({cif:cif}, body, {returnOriginal: false})
+        if (!data) {
+            handleHttpError(res, "ERROR_NOT_UPDATED", 403)
+            return
+        }
+
         res.send(data)
     } catch (error) {
         handleHttpError(res, "ERROR_UPDATE_ITEM_COMMERCE" + error)

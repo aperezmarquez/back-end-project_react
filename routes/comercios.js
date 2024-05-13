@@ -15,15 +15,15 @@ router.get("/:cif", authMiddleware, validatorCIFCommerce, getItem)
 
 // Comprobamos que estan todos los campos necesarios para crear un comercio desde el validator
 // Una vez comprobados los datos enviamos la peticion al createItem del controller de comercios
-router.post("/", authMiddleware, checkRol(["admin"]), validatorCreateCommerce, createItem)
+router.post("/", validatorCreateCommerce, createItem)
 
 // Comprobamos que el cif sea correcto y que exista alguna variable que modificar
 // Envaimos la peticion al updateItem del controller de comercios
-router.patch("/:cif", authMiddleware, validatorUpdateCommerce, updateItem)
+router.patch("/:cif", validatorUpdateCommerce, updateItem)
 
 // Comprobamos que el cif sea correcto
 // Enviamos la peticion al deleteItem del controller de comercios
-router.delete("/:cif", authMiddleware, checkRol(["admin"]), validatorCIFCommerce, deleteItem)
+router.delete("/:cif", validatorCIFCommerce, deleteItem)
 
 // Exportamos el router para usarlo desde app.js
 module.exports = router

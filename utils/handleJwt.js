@@ -20,9 +20,9 @@ const tokenSign = (user) => {
     return sign
 }
 
-const verifyToken = (tokeJwt) => {
+const verifyToken = (tokenJwt) => {
     try {
-        return jwt.verify(tokeJwt, JWT_SECRET)
+        return jwt.verify(tokenJwt, JWT_SECRET)
     } catch (error) {
         handleHttpError("TOKEN_NOT_VALID", 500)
     }

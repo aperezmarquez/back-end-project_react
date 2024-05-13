@@ -39,7 +39,7 @@ app.use("/api/user", userRoute)
 
 //ROUTE AUTH
 const authRoute = require("./routes/auth")
-app.use("/api", authRoute)
+app.use("/api/auth", authRoute)
 
 // ASIGNAMOS EL PUERTO
 // Usamos el puerto que hemos definido en el .env para escuchar las peticiones desde este
@@ -49,3 +49,5 @@ const port = process.env.PORT
 app.listen(port, () => {
     dbConnect()
 })
+
+module.exports = app

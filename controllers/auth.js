@@ -1,7 +1,8 @@
 const { handleHttpError } = require("../utils/handleError")
 const { matchedData } = require("express-validator")
 const { encrypt, compare } = require("../utils/handlePassword")
-const { userModel } = require("../models/index")
+const { usersModel } = require("../models/index")
+const { tokenSign } = require("../utils/handleJwt")
 
 const registerCtrl = async (req, res) => {
     try {
@@ -18,7 +19,7 @@ const registerCtrl = async (req, res) => {
         }
         res.send(data)
     } catch (error) {
-        handleHttoError(res, "ERROR_REGISTER_USER" + error, 402)
+        handleHttpError(res, "ERROR_REGISTER_USER" + error, 402)
     }
 }
 
