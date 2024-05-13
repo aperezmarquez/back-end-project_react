@@ -16,9 +16,14 @@ const getUser = async (req, res) => {
     try {
         const { mail } = matchedData(req)
         const data = await usersModel.findOne({ mail:mail})
+        if (!data) {
+            handleHttpError(res, "USER_NOT_FOUND", 404)
+            return
+        }
+
         res.send({data})
     } catch (err) {
-        handleHttpError(res, "ERROR_GET_USER" + err)
+        handleHttpError(res, "ERROR_GET_USER" + err, 402)
     }
 }
 
