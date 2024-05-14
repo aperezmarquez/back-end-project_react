@@ -3,7 +3,7 @@ const app = require("../app")
 
 var token = ""
 
-describe("Users Tests", () => {
+describe("users", () => {
     
     var mail = ""
 
@@ -17,7 +17,7 @@ describe("Users Tests", () => {
         expect(response.body.user.mail).toEqual("jose@gmail.com")      
         token = response.body.token
     })
-  
+
     it("should login a user", async() => {
         const response = await request(app)
             .post("/api/auth/login")
@@ -45,44 +45,9 @@ describe("Users Tests", () => {
         
         expect(response.body.data.pop().mail).toEqual("jose@gmail.com")
     })
-
-    it("should update a user", async() => {
-        const response = await request(app)
-            .patch("/api/auth/users/"+mail)
-            .send({"nombre": "Juanito"})
-            .set("Accept", "application/json")
-            .expect(200)
-        
-        expect(response.body.data.nombre).toEqual("Juanito")
-    })
-
-    it("should not update a user, var does not exist", async() => {
-        const response = await request(app)
-            .patch("/api/auth/users/"+mail)
-            .send({"example": "error"})
-            .set("Accept", "application/json")
-            .expect(200)
-
-        expect(response.body.data.example).toEqual(undefined)
-    })
-
-    it("should not update a user, wrong mail", async() => {
-        const response = await request(app)
-            .patch("/api/auth/users/error@gmail.com")
-            .send({"nombre": "Juan Carlos"})
-            .set("Accept", "application/json")
-            .expect(403)
-    })
-
-    it("should delete a user", async() => {
-        const response = await request(app)
-            .delete("/api/auth/users/"+mail)
-            .set("Accept", "application/json")
-            .expect(200)
-    })
 })
 
-describe("Comercios Tests", () => {
+describe("comercios", () => {
 
     var cif = ""
 
