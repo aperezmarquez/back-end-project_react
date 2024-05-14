@@ -104,7 +104,7 @@ router.get("/users/:mail", validateGetDeleteUser, getUser)
  *          content:
  *              application/json:
  *                  schema:
- *                      $ref: "#/components/schemas/Register"
+ *                      $ref: "#/components/schemas/Users"
  *      responses:
  *          '200':
  *              description: The user is registered in the DB
@@ -128,7 +128,7 @@ router.patch("/users/:mail", validateUpdateUser, updateUser)
  *          content:
  *              application/json:
  *                  schema:
- *                      $ref: "#/components/schemas/Register"
+ *                      $ref: "#/components/schemas/Users"
  *      responses:
  *          '200':
  *              description: The user is registered in the DB
