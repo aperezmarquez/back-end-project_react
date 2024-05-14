@@ -85,7 +85,7 @@ router.get("/:city", validatorCityCommerce, getItemsInCity)
  */
 // Comprobamos que estan todos los campos necesarios para crear un comercio desde el validator
 // Una vez comprobados los datos enviamos la peticion al createItem del controller de comercios
-router.post("/", authMiddleware, checkRol(["admin"]), validatorCreateCommerce, createItem)
+router.post("/", authMiddleware, validatorCreateCommerce, createItem)
 
 
 /**
@@ -156,7 +156,7 @@ router.get("/:interests", validatorCityCommerce, checkRol(["commerce"]), checkIn
  */
 // Comprobamos que el cif sea correcto
 // Enviamos la peticion al deleteItem del controller de comercios
-router.delete("/:cif", authMiddleware, checkRol(["admin"]), validatorCIFCommerce, deleteItem)
+router.delete("/:cif", authMiddleware, validatorCIFCommerce, deleteItem)
 
 // Exportamos el router para usarlo desde app.js
 module.exports = router

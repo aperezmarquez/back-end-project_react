@@ -72,7 +72,7 @@ router.post("/login", validatorLogin, loginCtrl)
  *          '402':
  *              description: Couldn't return the users
  */
-router.get("/users", authMiddleware, checkRol(["admin"]), getUsers)
+router.get("/users", authMiddleware, getUsers)
 
 
 /**
