@@ -7,6 +7,9 @@ const validateCreateUser = [
     check("mail").exists().notEmpty(),
     check("password").exists().notEmpty(),
     check("role"),
+    check("city"),
+    check("interests"),
+    check("oferts"),
     (req, res, next) => {
         return validateResults(req, res, next)
     }
@@ -21,8 +24,9 @@ const validateGetDeleteUser = [
 
 const validateUpdateUser = [
     check("mail").exists().notEmpty(),
-    check("nombre"),
-    check("password"),
+    check("city"),
+    check("interests"),
+    check("oferts"),
     check("role"),
     (req, res, next) => {
         return validateResults(req, res, next)

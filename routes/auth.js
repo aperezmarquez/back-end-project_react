@@ -4,6 +4,8 @@ const { validatorRegister, validatorLogin } = require("../validators/auth")
 const { registerCtrl, loginCtrl } = require("../controllers/auth")
 const { validateGetDeleteUser, validateUpdateUser } = require("../validators/users")
 const { getUsers, getUser, updateUser, deleteUser } = require("../controllers/users")
+const { authMiddleware } = require("../middleware/session")
+const { checkRol } = require("../middleware/rol")
 
 /**
  * @openapi
@@ -70,7 +72,7 @@ router.post("/login", validatorLogin, loginCtrl)
  *          '402':
  *              description: Couldn't return the users
  */
-router.get("/users", getUsers)
+router.get("/users", authMiddleware, checkRol(["admin"]), getUsers)
 
 
 /**
@@ -89,7 +91,7 @@ router.get("/users", getUsers)
  *          '402':
  *              description: An error occurred trying to retreive the user
  */
-router.get("/users/:mail", validateGetDeleteUser, getUser)
+router.get("/users/:mail", authMiddleware, validateGetDeleteUser, getUser)
 
 
 /**
@@ -113,7 +115,7 @@ router.get("/users/:mail", validateGetDeleteUser, getUser)
  *      security:
  *          - bearerAuth: []
  */
-router.patch("/users/:mail", validateUpdateUser, updateUser)
+router.patch("/users/:mail", authMiddleware, validateUpdateUser, updateUser)
 
 
 /**
@@ -137,6 +139,6 @@ router.patch("/users/:mail", validateUpdateUser, updateUser)
  *      security:
  *          - bearerAuth: []
  */
-router.delete("/users/:mail", validateGetDeleteUser, deleteUser)
+router.delete("/users/:mail", authMiddleware, validateGetDeleteUser, deleteUser)
 
 module.exports = router

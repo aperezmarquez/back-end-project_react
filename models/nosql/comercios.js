@@ -23,6 +23,9 @@ const CommerceScheme = new mongoose.Schema(
     telefono: {
         type: String
     },
+    city: {
+        type: String
+    },
     id: {
         type: Number,
         unique: true

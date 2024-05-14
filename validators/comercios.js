@@ -8,6 +8,7 @@ const validatorCreateCommerce = [
     check("cif").exists().notEmpty(),
     check("direccion").exists().notEmpty(),
     check("mail").exists().notEmpty(),
+    check("city").exists().notEmpty(),
     check("telefono").exists().notEmpty(),
     // Ademas, de que exista y no este vacio comprobamos que sea un Int el id
     check("id").exists().notEmpty().isInt(),
@@ -25,6 +26,13 @@ const validatorCIFCommerce = [
     }
 ]
 
+const validatorCityCommerce = [
+    check("city").exists().notEmpty(),
+    (req, res, next) => {
+        return validateResults(req, res, next)
+    }
+]
+
 // Comprobamos que el cif exista y no este vacio 
 // A parte, checkamos las otras variables que se pueden cambiar para poder usarlas
 const validatorUpdateCommerce = [
@@ -33,10 +41,11 @@ const validatorUpdateCommerce = [
     check("direccion"),
     check("mail"),
     check("telefono"),
+    check("city"),
     (req, res, next) => {
         return validateResults(req, res, next)
     }
 ]
 
 // Exportamos los tres validators para usarlos en el route
-module.exports = { validatorCreateCommerce, validatorCIFCommerce, validatorUpdateCommerce }
+module.exports = { validatorCreateCommerce, validatorCIFCommerce, validatorCityCommerce, validatorUpdateCommerce }

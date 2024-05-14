@@ -7,8 +7,14 @@ const authMiddleware = async (req, res, next) => {
             handleHttpError(res, "NOT_TOKEN", 401)
             return
         }
+        
+        const token = req.headers.authorization.split(' ').pop()
+        
+        if (!token || token == "Bearer") {
+            handleHttpError(res, "NOT_TOKEN", 401)
+            return
+        }
 
-        const token = req.header.authorization.split(' ').pop()
         const dataToken = await verifyToken(token)
 
         if (!dataToken.mail) {

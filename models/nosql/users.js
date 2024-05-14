@@ -11,6 +11,17 @@ const UserScheme = new mongoose.Schema(
         password: {
             type: String
         },
+        city: {
+            type: String,
+            default: "N/A"
+        },
+        interests: {
+            type: Array
+        },
+        oferts: {
+            type: Boolean,
+            default: false
+        },
         role: {
             type: ["user", "admin", "commerce"],
             default: "user"
