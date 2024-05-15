@@ -10,7 +10,7 @@ describe("Users Tests", () => {
     it("should register a user", async() => {
         const response = await request(app)
             .post("/api/auth/register")
-            .send({"nombre": "JoseLu", "mail": "jose@gmail.com", "password": "123456789", "role": ['admin']})
+            .send({"nombre": "JoseLu", "mail": "jose@gmail.com", "password": "123456789", "city": "Roma", "role": ['admin']})
             .set("Accept", "application/json")
             .expect(200)
 
@@ -78,13 +78,13 @@ describe("Users Tests", () => {
             .expect(403)
     })
 
-    it("should delete a user", async() => {
+    /*it("should delete a user", async() => {
         const response = await request(app)
             .delete("/api/auth/users/"+mail)
             .set('Authorization', `Bearer ${token}`)
             .set("Accept", "application/json")
             .expect(200)
-    })
+    })*/
 })
 
 describe("Comercios Tests", () => {

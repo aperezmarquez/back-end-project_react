@@ -121,7 +121,7 @@ router.patch("/:cif", authMiddleware, validatorUpdateCommerce, updateItem)
  *      tags:
  *      - Comercios
  *      summary: Returns users in a city
- *      description: Gives the users in the city you specified
+ *      description: Gives the users in the city of the commerce
  *      responses:
  *          '200':
  *              description: Gives back a list of users
@@ -130,7 +130,7 @@ router.patch("/:cif", authMiddleware, validatorUpdateCommerce, updateItem)
  *          '404':
  *              description: Users not found in a city
  */
-router.get("/:interests", validatorCityCommerce, checkRol(["commerce"]), checkInterestsUsers)
+router.get("/interests", authMiddleware, checkInterestsUsers)
 
 
 /**

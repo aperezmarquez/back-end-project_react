@@ -8,7 +8,6 @@ const { commerceModel, usersModel } = require("../models/index")
 const { handleHttpError } = require("../utils/handleError")
 
 // GET ALL ITEMS FROM DB
-// Con esta funcion devolvemos todos los comercios existentes al cliente que hizo la peticion GET
 const getItems = async (req, res) => {
     try {
         const data = await commerceModel.find({}).sort({cif:1})
@@ -19,7 +18,6 @@ const getItems = async (req, res) => {
 }
 
 // CREACION DE COMERCIO
-// Funcion para crear un comercio en la base de datos, usando el commerceModel
 const createItem = async (req, res) => {
     try {
         // Necesitamos el validator de comercios para hacer matchedData
@@ -32,7 +30,6 @@ const createItem = async (req, res) => {
 }
 
 // GET ITEM BY CIF
-// A traves del cif indicado por el cliente buscamos en el base de datos un comercio con este cif y se lo devolvemos
 const getItem = async (req, res) => {
     try {
         const { cif } = matchedData(req)
@@ -50,25 +47,7 @@ const getItem = async (req, res) => {
     }
 }
 
-const getItemsInCity = async (req, res) => {
-    try {
-        const { city } = matchedData(req)
-
-        const data = await commerceModel.find({city: city})
-
-        if (!data) {
-            handleHttpError(res, "NO_COMMERCES_IN_CITY", 404)
-            return
-        }
-
-        res.send(data)
-    } catch (error) {
-        handleHttpError(res, "ERROR_GET_ITEMS_IN_CITY" + error)
-    }
-}
-
 // UPDATE ITEM BY CIF
-// Funcion para actualizar un comercio, a traves del cif que se indica en la url de la peticion PATCH
 const updateItem = async (req, res) => {
     try {
         const { cif, ...body } = matchedData(req)
@@ -85,11 +64,16 @@ const updateItem = async (req, res) => {
     }
 }
 
+// CHECK THE INTERESTS OF USERS IN COMMERCE CITY
 const checkInterestsUsers = async (req, res) => {
     try {
-        const { city } = matchedData(req)
+        const token = req.headers.authorization.split(' ').pop()
+        
+        if (!token) {
+            handleHttpError(res, "NO_TOKEN", 402)
+        }
 
-        const data = await usersModel.find({city: city})
+        const data = await usersModel.find({city: token.city})
 
         if (!data) {
             handleHttpError(res, "NO_USERS_IN_CITY", 404)

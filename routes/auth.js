@@ -3,7 +3,7 @@ const router = express.Router()
 const { validatorRegister, validatorLogin } = require("../validators/auth")
 const { registerCtrl, loginCtrl } = require("../controllers/auth")
 const { validateGetDeleteUser, validateUpdateUser } = require("../validators/users")
-const { getUsers, getUser, updateUser, deleteUser } = require("../controllers/users")
+const { getUsers, getUser, getOferts, updateUser, deleteUser } = require("../controllers/users")
 const { authMiddleware } = require("../middleware/session")
 const { checkRol } = require("../middleware/rol")
 
@@ -116,6 +116,27 @@ router.get("/users/:mail", authMiddleware, validateGetDeleteUser, getUser)
  *          - bearerAuth: []
  */
 router.patch("/users/:mail", authMiddleware, validateUpdateUser, updateUser)
+
+
+/**
+ * @openapi
+ * /api/auth/users/oferts:
+ *  get:
+ *      tags:
+ *      - User
+ *      summary: Returns a list of commerces
+ *      description: The user checks his oferts and gets in return a list of commerces in his city
+ *      responses:
+ *          '200':
+ *              description: Returns the list correctly
+ *          '404':
+ *              description: No commerces found
+ *          '402':
+ *              description: Error with user token
+ *          '403':
+ *              description: An error occurred trying to retreive the user
+ */
+router.get("/users/oferts", authMiddleware, getOferts)
 
 
 /**

@@ -4,6 +4,7 @@ const { encrypt, compare } = require("../utils/handlePassword")
 const { usersModel } = require("../models/index")
 const { tokenSign } = require("../utils/handleJwt")
 
+// REGISTERS A USER
 const registerCtrl = async (req, res) => {
     try {
         req = matchedData(req)
@@ -23,6 +24,7 @@ const registerCtrl = async (req, res) => {
     }
 }
 
+// LOGIN
 const loginCtrl = async (req, res) => {
     try {
         req = matchedData(req)
@@ -48,6 +50,7 @@ const loginCtrl = async (req, res) => {
     }
 }
 
+// ADD ADMIN ROLE
 const setAdminCtrl = async (req, res) => {
     try {
         req = matchedData(req)
