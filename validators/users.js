@@ -6,8 +6,8 @@ const validateCreateUser = [
     check("nombre").exists().notEmpty(),
     check("mail").exists().notEmpty(),
     check("password").exists().notEmpty(),
+    check("city").exists().notEmpty(),
     check("role"),
-    check("city"),
     check("interests"),
     check("oferts"),
     (req, res, next) => {
