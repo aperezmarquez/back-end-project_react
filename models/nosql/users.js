@@ -23,7 +23,7 @@ const UserScheme = new mongoose.Schema(
             default: false
         },
         role: {
-            type: ["user", "admin", "commerce"],
+            type: ["user", "admin"],
             default: "user"
         }
     },

@@ -12,6 +12,7 @@ const registerCtrl = async (req, res) => {
 
         const body = {...req, password}
         const dataUser = await usersModel.create(body)
+        
         dataUser.set("password", undefined, {strict: false})
 
         const data = {

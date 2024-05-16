@@ -104,7 +104,7 @@ const updateItem = async (req, res) => {
 const checkInterestsUsers = async (req, res) => {
     try {
         const token = jwt.decode(req.headers.authorization.split(' ').pop())
-        console.log(token.city)
+        
         if (!token) {
             handleHttpError(res, "NO_TOKEN", 402)
         }
