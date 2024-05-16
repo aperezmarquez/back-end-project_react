@@ -112,7 +112,7 @@ describe("Comercios Tests", () => {
         expect(response.body.comercio.direccion).toEqual("Espana")
         expect(response.body.comercio.telefono).toEqual("123456789")
 
-        cif = response.body.cif
+        cif = response.body.comercio.cif
     })
 
     it("should give an error, commerce already exists", async() => {
@@ -156,8 +156,9 @@ describe("Comercios Tests", () => {
             .get("/api/comercio/")
             .set("Accept", "application/json")
             .expect(200)
-        console.log(response.body)
-        expect(response.body.pop().comercio.nombre).toEqual("Ferrari")
+
+        var object = response.body.pop()
+        expect(object.nombre).toEqual("Ferrari")
     })
 
     it("should get the users in the city of the commerce", async() => {
@@ -176,7 +177,7 @@ describe("Comercios Tests", () => {
             .set("Accept", "application/json")
             .expect(200)
         
-        expect(response.body.comercio.direccion).toEqual("Italia")
+        expect(response.body.direccion).toEqual("Italia")
     })
 
     it("should not update, this var doesn't exist", async() => {
@@ -186,8 +187,8 @@ describe("Comercios Tests", () => {
             .send({"example": "error"})
             .set("Accept", "application/json")
             .expect(200)
-        
-        expect(response.body.comercio.example).toEqual(undefined)
+
+        expect(response.body.example).toEqual(undefined)
     })
 
     it("should delete the commerce", async() => {
@@ -197,6 +198,6 @@ describe("Comercios Tests", () => {
             .set("Accept", "application/json")
             .expect(200)
         
-        expect(response.body.comercio.mail).toEqual("ferrari@fe.com")
+        expect(response.body.mail).toEqual("ferrari@fe.com")
     })
 })
