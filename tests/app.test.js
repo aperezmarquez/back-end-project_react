@@ -86,13 +86,13 @@ describe("Users Tests", () => {
             .expect(403)
     })
 
-    /*it("should delete a user", async() => {
+    it("should delete a user", async() => {
         const response = await request(app)
             .delete("/api/auth/users/"+mail)
             .set('Authorization', `Bearer ${token}`)
             .set("Accept", "application/json")
             .expect(200)
-    })*/
+    })
 })
 
 describe("Comercios Tests", () => {
@@ -107,10 +107,10 @@ describe("Comercios Tests", () => {
             .set("Accept", "application/json")
             .expect(200)
         
-        expect(response.body.mail).toEqual("ferrari@fe.com")
-        expect(response.body.cif).toEqual("cifExamp")
-        expect(response.body.direccion).toEqual("Espana")
-        expect(response.body.telefono).toEqual("123456789")
+        expect(response.body.comercio.mail).toEqual("ferrari@fe.com")
+        expect(response.body.comercio.cif).toEqual("cifExamp")
+        expect(response.body.comercio.direccion).toEqual("Espana")
+        expect(response.body.comercio.telefono).toEqual("123456789")
 
         cif = response.body.cif
     })
@@ -156,8 +156,8 @@ describe("Comercios Tests", () => {
             .get("/api/comercio/")
             .set("Accept", "application/json")
             .expect(200)
-
-        expect(response.body.pop().nombre).toEqual("Ferrari")
+        console.log(response.body)
+        expect(response.body.pop().comercio.nombre).toEqual("Ferrari")
     })
 
     it("should get the users in the city of the commerce", async() => {
@@ -176,7 +176,7 @@ describe("Comercios Tests", () => {
             .set("Accept", "application/json")
             .expect(200)
         
-        expect(response.body.direccion).toEqual("Italia")
+        expect(response.body.comercio.direccion).toEqual("Italia")
     })
 
     it("should not update, this var doesn't exist", async() => {
@@ -187,7 +187,7 @@ describe("Comercios Tests", () => {
             .set("Accept", "application/json")
             .expect(200)
         
-        expect(response.body.example).toEqual(undefined)
+        expect(response.body.comercio.example).toEqual(undefined)
     })
 
     it("should delete the commerce", async() => {
@@ -197,6 +197,6 @@ describe("Comercios Tests", () => {
             .set("Accept", "application/json")
             .expect(200)
         
-        expect(response.body.mail).toEqual("ferrari@fe.com")
+        expect(response.body.comercio.mail).toEqual("ferrari@fe.com")
     })
 })

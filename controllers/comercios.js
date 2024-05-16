@@ -5,6 +5,7 @@ const { commerceModel, usersModel } = require("../models/index")
 const { handleHttpError } = require("../utils/handleError")
 const { encrypt, compare } = require("../utils/handlePassword")
 const { tokenSign } = require("../utils/handleJwt")
+const jwt = require("jsonwebtoken")
 
 // GET ALL ITEMS FROM DB
 const getItems = async (req, res) => {
@@ -20,7 +21,7 @@ const getItems = async (req, res) => {
 const createItem = async (req, res) => {
     try {
         // Necesitamos el validator de comercios para hacer matchedData
-        const req = matchedData(req)
+        req = matchedData(req)
         const password = await encrypt(req.password)
 
         const body = {...req, password}
@@ -29,7 +30,7 @@ const createItem = async (req, res) => {
 
         const data = {
             token: await tokenSign(dataCommerce),
-            user: dataCommerce
+            comercio: dataCommerce
         }
         res.send(data)
     } catch (error) {
@@ -102,7 +103,7 @@ const updateItem = async (req, res) => {
 // CHECK THE INTERESTS OF USERS IN COMMERCE CITY
 const checkInterestsUsers = async (req, res) => {
     try {
-        const token = req.headers.authorization.split(' ').pop()
+        const token = jwt.decode(req.headers.authorization.split(' ').pop())
         console.log(token.city)
         if (!token) {
             handleHttpError(res, "NO_TOKEN", 402)

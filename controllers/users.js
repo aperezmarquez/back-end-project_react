@@ -2,6 +2,7 @@
 const { matchedData } = require('express-validator') 
 const { usersModel } = require('../models/index')
 const { handleHttpError } = require("../utils/handleError")
+const jwt = require("jsonwebtoken")
 
 // GET ALL USERS IN MONGDB
 const getUsers = async (req, res) => {
@@ -54,8 +55,8 @@ const updateUser = async (req, res) => {
 // GET OFERTS OF COMMERCES IN THE CITY OF USER
 const getOferts = async (req, res) => {
     try {
-        const token = req.headers.authorization.split(' ').pop()
-        console.log(token.oferts)
+        const token = jwt.decode(req.headers.authorization.split(' ').pop())
+        
         if (!token.oferts) {
             handleHttpError(res, "OFFERTS_DEACTIVE", 402)
             return
