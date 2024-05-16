@@ -47,6 +47,14 @@ describe("Users Tests", () => {
         expect(response.body.data.pop().mail).toEqual("jose@gmail.com")
     })
 
+    it("should get all the oferts", async() => {
+        const response = await request(app)
+            .get("/api/auth/users/oferts")
+            .set('Authorization', `Bearer ${token}`)
+            .set("Accept", "application/json")
+            .expect(200)
+    })
+
     it("should update a user", async() => {
         const response = await request(app)
             .patch("/api/auth/users/"+mail)
@@ -95,7 +103,7 @@ describe("Comercios Tests", () => {
         const response = await request(app)
             .post("/api/comercio/")
             .set('Authorization', `Bearer ${token}`)
-            .send({"nombre": "Ferrari", "cif": "cifExamp", "direccion": "Espana", "mail": "ferrari@fe.com", "telefono": "123456789", "city": "Roma", "id": 2})
+            .send({"nombre": "Ferrari", "cif": "cifExamp", "password": "123456789", "direccion": "Espana", "mail": "ferrari@fe.com", "telefono": "123456789", "city": "Roma", "id": 2})
             .set("Accept", "application/json")
             .expect(200)
         
@@ -111,7 +119,7 @@ describe("Comercios Tests", () => {
         const response = await request(app)
             .post("/api/comercio/")
             .set('Authorization', `Bearer ${token}`)
-            .send({"nombre": "Ferrari", "cif": "cifExamp", "direccion": "Espana", "mail": "ferrari@fe.com", "telefono": "123456789", "id": 2})
+            .send({"nombre": "Ferrari", "cif": "cifExamp", "password": "123456789", "direccion": "Espana", "mail": "ferrari@fe.com", "telefono": "123456789", "id": 2})
             .set("Accept", "application/json")
             .expect(403)
     })
@@ -120,9 +128,27 @@ describe("Comercios Tests", () => {
         const response = await request(app)
             .post("/api/comercio/")
             .set('Authorization', `Bearer ${token}`)
-            .send({"nombre": "Ford", "direccion": "Espana", "mail": "ford@ford.com", "telefono": "234567890", "id": 3})
+            .send({"nombre": "Ford", "password": "123456789", "direccion": "Espana", "mail": "ford@ford.com", "telefono": "234567890", "id": 3})
             .set("Accept", "application/json")
             .expect(403)
+    })
+
+    it("should login a commerce", async() => {
+        const response = await request(app)
+            .post("/api/comercio/login")
+            .send({"cif": "cifExamp", "password": "123456789"})
+            .set("Accept", "application/json")
+            .expect(200)
+
+        token = response.body.token
+    })
+
+    it("shouldn't login a commerce, cif doesn't exist", async() => {
+        const response = await request(app)
+            .post("/api/comercio/login")
+            .send({"cif": "cifError", "password": "123456789"})
+            .set("Accept", "application/json")
+            .expect(404)
     })
 
     it("should get the commerces", async() => {
@@ -132,6 +158,14 @@ describe("Comercios Tests", () => {
             .expect(200)
 
         expect(response.body.pop().nombre).toEqual("Ferrari")
+    })
+
+    it("should get the users in the city of the commerce", async() => {
+        const response = await request(app)
+            .get("/api/comercio/interests")
+            .set("Authorization", `Bearer ${token}`)
+            .set("Accept", "application/json")
+            .expect(200)
     })
 
     it("should update the commerce", async() => {

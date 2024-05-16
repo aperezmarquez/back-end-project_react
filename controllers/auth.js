@@ -28,7 +28,7 @@ const registerCtrl = async (req, res) => {
 const loginCtrl = async (req, res) => {
     try {
         req = matchedData(req)
-        const user = await usersModel.findOne({ mail: req.mail }).select("password name role mail")
+        const user = await usersModel.findOne({ mail: req.mail }).select("password name role mail cit cityy")
         if (!user) {
             handleHttpError(res, "USER_NOT_EXISTS", 404)
             return
@@ -46,7 +46,7 @@ const loginCtrl = async (req, res) => {
         const data = {token: await tokenSign(user), user}
         res.send(data)
     } catch (error) {
-        handleHttpError(res, "ERROR_LOGIN_USER" + error)
+        handleHttpError(res, "ERROR_LOGIN_USER" + error, 402)
     }
 }
 

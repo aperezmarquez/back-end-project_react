@@ -15,6 +15,35 @@ const { checkRol } = require("../middleware/rol")
  *      - Register
  *      summary: Registers a user
  *      description: Uses a validator to register, checking if the length of the name is correct, if the mail in fact is a mail or if the password legth is correct
+ *      parameters:
+ *          - in: header
+ *            name: nombre
+ *            type: string
+ *            description: The name of the user
+ *          - in: header
+ *            name: mail
+ *            type: string
+ *            description: The mail of the user
+ *          - in: header
+ *            name: password
+ *            type: string
+ *            description: The password set by the user
+ *          - in: header
+ *            name: role
+ *            type: string
+ *            description: The role of the user ["user", "admin"]
+ *          - in: header
+ *            name: city
+ *            type: string
+ *            description: The city where the user is from
+ *          - in: header
+ *            name: interest
+ *            type: string
+ *            description: An array with the user's interests
+ *          - in: header
+ *            name: oferts
+ *            type: boolean
+ *            description: true/false, if true he receives mails from commerces
  *      requestBody:
  *          content:
  *              application/json:
@@ -25,8 +54,6 @@ const { checkRol } = require("../middleware/rol")
  *              description: The user is registered in the DB
  *          '402':
  *              description: User not registered correctly
- *      security:
- *          - bearerAuth: []
  */
 router.post("/register", validatorRegister, registerCtrl)
 
@@ -40,6 +67,15 @@ router.post("/register", validatorRegister, registerCtrl)
  *      - Login
  *      summary: Logins a user
  *      description: Uses a validator to login, checking if the mail in fact is a mail or if the password legth is correct
+ *      parameters:
+ *          - in: header
+ *            name: mail
+ *            type: string
+ *            description: The mail of the user
+ *          - in: header
+ *            name: password
+ *            type: string
+ *            description: The password set by the user
  *      requestBody:
  *          content:
  *              application/json:
@@ -52,8 +88,6 @@ router.post("/register", validatorRegister, registerCtrl)
  *              description: The user doesn't exist
  *          '401':
  *              description: Invalid password
- *      security:
- *          - bearerAuth: []
  */
 router.post("/login", validatorLogin, loginCtrl)
 
@@ -100,8 +134,25 @@ router.get("/users/:mail", authMiddleware, validateGetDeleteUser, getUser)
  *  patch:
  *      tags:
  *      - User
- *      summary: Registers a user
- *      description: Uses a validator to register, checking if the length of the name is correct, if the mail in fact is a mail or if the password legth is correct
+ *      summary: Updates a user
+ *      description: Can update three fields of user city, interests, oferts
+ *      parameters:
+ *          - in: header
+ *            name: mail
+ *            type: string
+ *            description: The mail of the user, must be provided to identify him
+ *          - in: header
+ *            name: city
+ *            type: string
+ *            description: You can change the city where the user is from
+ *          - in: header
+ *            name: interests
+ *            type: string
+ *            description: You can add a new interest to the array of interests
+ *          - in: header
+ *            name: oferts
+ *            type: boolean
+ *            description: Can change this variable from false to true, or the other way
  *      requestBody:
  *          content:
  *              application/json:

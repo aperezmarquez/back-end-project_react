@@ -55,7 +55,7 @@ const updateUser = async (req, res) => {
 const getOferts = async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ').pop()
-
+        console.log(token.oferts)
         if (!token.oferts) {
             handleHttpError(res, "OFFERTS_DEACTIVE", 402)
             return

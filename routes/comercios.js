@@ -1,8 +1,8 @@
 // ROUTE COMERCIOS
 const express = require("express")
-const { getItems, createItem, getItem, getItemsInCity, checkInterestsUsers, updateItem, deleteItem } = require("../controllers/comercios")
+const { getItems, createItem, loginCommerce, getItem, checkInterestsUsers, updateItem, deleteItem } = require("../controllers/comercios")
 const router = express.Router()
-const { validatorCreateCommerce, validatorCIFCommerce, validatorCityCommerce, validatorUpdateCommerce } = require("../validators/comercios")
+const { validatorCreateCommerce, validatorLoginCommerce, validatorCIFCommerce, validatorCityCommerce, validatorUpdateCommerce } = require("../validators/comercios")
 const { authMiddleware } = require("../middleware/session")
 const { checkRol } = require("../middleware/rol")
 
@@ -45,29 +45,10 @@ router.get("/:cif", validatorCIFCommerce, getItem)
 
 /**
  * @openapi
- * /api/comercio/:city:
- *  get:
- *      tags:
- *      - Comercios
- *      summary: Returns commerces in a city
- *      description: Gives the commerces in the city you specified
- *      responses:
- *          '200':
- *              description: Gives back a list of commerces
- *          '402':
- *              description: Couldn't return the commerces
- *          '404':
- *              description: Commerces not found in a city
- */
-router.get("/:city", validatorCityCommerce, getItemsInCity)
-
-
-/**
- * @openapi
  * /api/comercio/:
  *  post:
  *      tags:
- *      - Comercios
+ *      - Register
  *      summary: Creates a new commerce
  *      description: Creates a commerce with the data you set
  *      requestBody:
@@ -86,6 +67,28 @@ router.get("/:city", validatorCityCommerce, getItemsInCity)
 // Comprobamos que estan todos los campos necesarios para crear un comercio desde el validator
 // Una vez comprobados los datos enviamos la peticion al createItem del controller de comercios
 router.post("/", authMiddleware, validatorCreateCommerce, createItem)
+
+
+/**
+ * @openapi
+ * /api/comercio/login:
+ *  post:
+ *      tags:
+ *      - Login
+ *      summary: Login to a commerce
+ *      description: Login to a commerce if the specified cif exists and the password is correct
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: "#/components/schema/Commerce"
+ *      responses:
+ *          '200':
+ *              description: Login to the commerce
+ *          '402':
+ *              description: Couldn't login to the commerce
+ */
+router.post("/login", validatorLoginCommerce, loginCommerce) 
 
 
 /**

@@ -33,10 +33,6 @@ app.use("/api-docs",
 const commerceRoute = require("./routes/comercios")
 app.use("/api/comercio", commerceRoute)
 
-// ROUTE USER
-const userRoute = require("./routes/users")
-app.use("/api/user", userRoute)
-
 //ROUTE AUTH
 const authRoute = require("./routes/auth")
 app.use("/api/auth", authRoute)

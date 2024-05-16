@@ -10,9 +10,18 @@ const validatorCreateCommerce = [
     check("mail").exists().notEmpty(),
     check("city").exists().notEmpty(),
     check("telefono").exists().notEmpty(),
+    check("password").exists().notEmpty(),
     // Ademas, de que exista y no este vacio comprobamos que sea un Int el id
     check("id").exists().notEmpty().isInt(),
     // Despues de hacer los checks validamos los resultados obtenidos de estos checks
+    (req, res, next) => {
+        return validateResults(req, res, next)
+    }
+]
+
+const validatorLoginCommerce = [
+    check("cif").exists().notEmpty(),
+    check("password").exists().notEmpty(),
     (req, res, next) => {
         return validateResults(req, res, next)
     }
@@ -48,4 +57,4 @@ const validatorUpdateCommerce = [
 ]
 
 // Exportamos los tres validators para usarlos en el route
-module.exports = { validatorCreateCommerce, validatorCIFCommerce, validatorCityCommerce, validatorUpdateCommerce }
+module.exports = { validatorCreateCommerce, validatorLoginCommerce, validatorCIFCommerce, validatorCityCommerce, validatorUpdateCommerce }

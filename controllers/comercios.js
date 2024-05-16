@@ -1,11 +1,10 @@
 // CONTROLLER PARA COMERCIOS
-// DEFINIMOS EL MATCHED DATA
-// Funcion de express-validator que nos sirve para poner en uso los validators
+// DEFINIMOS EL MATCHED DATA, MODELOS Y ERRORHANDLER
 const { matchedData } = require("express-validator")
-// Cogemos el modelo de comercio que hemos creado en models/nosql
 const { commerceModel, usersModel } = require("../models/index")
-// Funcion de errores creada en utils, con esta funcion manejaremos todos los errores
 const { handleHttpError } = require("../utils/handleError")
+const { encrypt, compare } = require("../utils/handlePassword")
+const { tokenSign } = require("../utils/handleJwt")
 
 // GET ALL ITEMS FROM DB
 const getItems = async (req, res) => {
@@ -21,11 +20,47 @@ const getItems = async (req, res) => {
 const createItem = async (req, res) => {
     try {
         // Necesitamos el validator de comercios para hacer matchedData
-        const body = matchedData(req)
-        const data = await commerceModel.create(body)
+        const req = matchedData(req)
+        const password = await encrypt(req.password)
+
+        const body = {...req, password}
+        const dataCommerce = await commerceModel.create(body)
+        dataCommerce.set("password", undefined, {strict: false})
+
+        const data = {
+            token: await tokenSign(dataCommerce),
+            user: dataCommerce
+        }
         res.send(data)
     } catch (error) {
         handleHttpError(res, "ERROR_CREATE_ITEM_COMMERCE" + error)
+    }
+}
+
+// LOGIN COMMERCE
+const loginCommerce = async (req, res) => {
+    try {
+        req = matchedData(req)
+        const commerce = await commerceModel.findOne({cif: req.cif})
+
+        if (!commerce) {
+            handleHttpError(res, "COMMERCE_NOT_FOUND", 404)
+            return
+        }
+
+        const hashPassword = commerce.password
+        const check = await compare(req.password, hashPassword)
+
+        if (!check) {
+            handleHttpError(res, "INVALID_PASSWORD", 401)
+            return
+        }
+
+        commerce.set("password", undefined, {strict: false})
+        const data = {token: await tokenSign(commerce), commerce}
+        res.send(data)
+    } catch (error) {
+        handleHttpError(res, "ERROR_LOGIN_COMMERCE" + error, 402)
     }
 }
 
@@ -68,7 +103,7 @@ const updateItem = async (req, res) => {
 const checkInterestsUsers = async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ').pop()
-        
+        console.log(token.city)
         if (!token) {
             handleHttpError(res, "NO_TOKEN", 402)
         }
@@ -106,4 +141,4 @@ const deleteItem = async (req, res) => {
 }
 
 // Exportamos todas las funciones para usarlas dentro de routes
-module.exports = { getItems, createItem, getItem, getItemsInCity, updateItem, checkInterestsUsers, deleteItem }
+module.exports = { getItems, createItem, loginCommerce, getItem, updateItem, checkInterestsUsers, deleteItem }

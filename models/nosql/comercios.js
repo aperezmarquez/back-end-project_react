@@ -14,6 +14,9 @@ const CommerceScheme = new mongoose.Schema(
         type: String,
         unique: true
     },
+    password: {
+        type: String
+    },
     direccion: {
         type: String
     },
