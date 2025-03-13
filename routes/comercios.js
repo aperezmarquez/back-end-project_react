@@ -48,7 +48,7 @@ router.get("/:cif", validatorCIFCommerce, getItem)
  * /api/comercio/:
  *  post:
  *      tags:
- *      - Register
+ *      - Login
  *      summary: Creates a new commerce
  *      description: Creates a commerce with the data you set
  *      requestBody:

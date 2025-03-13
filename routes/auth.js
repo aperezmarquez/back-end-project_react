@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 const { validatorRegister, validatorLogin } = require("../validators/auth")
 const { registerCtrl, loginCtrl } = require("../controllers/auth")
-const { validateGetDeleteUser, validateUpdateUser } = require("../validators/users")
+const { validateGetDeleteUser, validateUpdateUser, validateCity } = require("../validators/users")
 const { getUsers, getUser, getOferts, updateUser, deleteUser } = require("../controllers/users")
 const { authMiddleware } = require("../middleware/session")
 const { checkRol } = require("../middleware/rol")
@@ -12,7 +12,7 @@ const { checkRol } = require("../middleware/rol")
  * /api/auth/register:
  *  post:
  *      tags:
- *      - Register
+ *      - Login
  *      summary: Registers a user
  *      description: Uses a validator to register, checking if the length of the name is correct, if the mail in fact is a mail or if the password legth is correct
  *      parameters:
@@ -187,7 +187,7 @@ router.patch("/users/:mail", authMiddleware, validateUpdateUser, updateUser)
  *          '403':
  *              description: An error occurred trying to retreive the user
  */
-router.get("/users/oferts", authMiddleware, getOferts)
+router.get("/users/oferts", authMiddleware, validateCity, getOferts)
 
 
 /**

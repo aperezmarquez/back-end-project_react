@@ -22,6 +22,13 @@ const validateGetDeleteUser = [
     }
 ]
 
+const validateCity = [
+    check("city").exists().notEmpty(),
+    (req, res, next) => {
+        return validateResults(req, res, next)
+    }
+]
+
 const validateUpdateUser = [
     check("mail").exists().notEmpty(),
     check("city"),
@@ -33,4 +40,4 @@ const validateUpdateUser = [
     }
 ]
 
-module.exports = { validateCreateUser, validateGetDeleteUser, validateUpdateUser }
+module.exports = { validateCreateUser, validateGetDeleteUser, validateUpdateUser, validateCity }

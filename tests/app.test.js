@@ -1,7 +1,8 @@
 const request = require("supertest")
 const app = require("../app")
 
-var token = ""
+var tokenU = ""
+var tokenC = ""
 
 describe("Users Tests", () => {
     
@@ -26,7 +27,7 @@ describe("Users Tests", () => {
 
         expect(response.body.user.mail).toEqual("jose@gmail.com")
         mail = response.body.user.mail
-        token = response.body.token
+        tokenU = response.body.token
     })
 
     it("should not login a user", async() => {
@@ -40,25 +41,17 @@ describe("Users Tests", () => {
     it("should get all users", async() => {
         const response = await request(app)
             .get("/api/auth/users")
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', `Bearer ${tokenU}`)
             .set("Accept", "application/json")
             .expect(200)
         
         expect(response.body.data.pop().mail).toEqual("jose@gmail.com")
     })
 
-    it("should get all the oferts", async() => {
-        const response = await request(app)
-            .get("/api/auth/users/oferts")
-            .set('Authorization', `Bearer ${token}`)
-            .set("Accept", "application/json")
-            .expect(200)
-    })
-
     it("should update a user", async() => {
         const response = await request(app)
             .patch("/api/auth/users/"+mail)
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', `Bearer ${tokenU}`)
             .send({"oferts": true})
             .set("Accept", "application/json")
             .expect(200)
@@ -70,7 +63,7 @@ describe("Users Tests", () => {
         const response = await request(app)
             .patch("/api/auth/users/"+mail)
             .send({"example": "error"})
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', `Bearer ${tokenU}`)
             .set("Accept", "application/json")
             .expect(200)
 
@@ -80,7 +73,7 @@ describe("Users Tests", () => {
     it("should not update a user, wrong mail", async() => {
         const response = await request(app)
             .patch("/api/auth/users/error@gmail.com")
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', `Bearer ${tokenU}`)
             .send({"nombre": "Juan Carlos"})
             .set("Accept", "application/json")
             .expect(403)
@@ -89,7 +82,7 @@ describe("Users Tests", () => {
     it("should delete a user", async() => {
         const response = await request(app)
             .delete("/api/auth/users/"+mail)
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', `Bearer ${tokenU}`)
             .set("Accept", "application/json")
             .expect(200)
     })
@@ -102,7 +95,7 @@ describe("Comercios Tests", () => {
     it("should create a commerce", async() => {
         const response = await request(app)
             .post("/api/comercio/")
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', `Bearer ${tokenU}`)
             .send({"nombre": "Ferrari", "cif": "cifExamp", "password": "123456789", "direccion": "Espana", "mail": "ferrari@fe.com", "telefono": "123456789", "city": "Roma", "id": 2})
             .set("Accept", "application/json")
             .expect(200)
@@ -118,7 +111,7 @@ describe("Comercios Tests", () => {
     it("should give an error, commerce already exists", async() => {
         const response = await request(app)
             .post("/api/comercio/")
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', `Bearer ${tokenU}`)
             .send({"nombre": "Ferrari", "cif": "cifExamp", "password": "123456789", "direccion": "Espana", "mail": "ferrari@fe.com", "telefono": "123456789", "id": 2})
             .set("Accept", "application/json")
             .expect(403)
@@ -127,7 +120,7 @@ describe("Comercios Tests", () => {
     it("should give an error, cif must exists and not be empty", async() => {
         const response = await request(app)
             .post("/api/comercio/")
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', `Bearer ${tokenU}`)
             .send({"nombre": "Ford", "password": "123456789", "direccion": "Espana", "mail": "ford@ford.com", "telefono": "234567890", "id": 3})
             .set("Accept", "application/json")
             .expect(403)
@@ -140,7 +133,7 @@ describe("Comercios Tests", () => {
             .set("Accept", "application/json")
             .expect(200)
 
-        token = response.body.token
+        tokenC = response.body.token
     })
 
     it("shouldn't login a commerce, cif doesn't exist", async() => {
@@ -164,7 +157,7 @@ describe("Comercios Tests", () => {
     it("should get the users in the city of the commerce", async() => {
         const response = await request(app)
             .get("/api/comercio/interests")
-            .set("Authorization", `Bearer ${token}`)
+            .set("Authorization", `Bearer ${tokenC}`)
             .set("Accept", "application/json")
             .expect(200)
     })
@@ -172,7 +165,7 @@ describe("Comercios Tests", () => {
     it("should update the commerce", async() => {
         const response = await request(app)
             .patch("/api/comercio/"+cif)
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', `Bearer ${tokenC}`)
             .send({"direccion": "Italia"})
             .set("Accept", "application/json")
             .expect(200)
@@ -183,7 +176,7 @@ describe("Comercios Tests", () => {
     it("should not update, this var doesn't exist", async() => {
         const response = await request(app)
             .patch("/api/comercio/"+cif)
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', `Bearer ${tokenC}`)
             .send({"example": "error"})
             .set("Accept", "application/json")
             .expect(200)
@@ -191,10 +184,19 @@ describe("Comercios Tests", () => {
         expect(response.body.example).toEqual(undefined)
     })
 
+    it("should get all the oferts", async() => {
+        const response = await request(app)
+            .get("/api/auth/users/oferts")
+            .set('Authorization', `Bearer ${tokenU}`)
+            .send({"city": "Roma"})
+            .set("Accept", "application/json")
+            .expect(200)
+    })
+
     it("should delete the commerce", async() => {
         const response = await request(app)
             .delete("/api/comercio/"+cif)
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', `Bearer ${tokenC}`)
             .set("Accept", "application/json")
             .expect(200)
         

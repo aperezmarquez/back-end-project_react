@@ -55,14 +55,9 @@ const updateUser = async (req, res) => {
 // GET OFERTS OF COMMERCES IN THE CITY OF USER
 const getOferts = async (req, res) => {
     try {
-        const token = jwt.decode(req.headers.authorization.split(' ').pop())
+        const { city } = matchedData(req)
         
-        if (!token.oferts) {
-            handleHttpError(res, "OFFERTS_DEACTIVE", 402)
-            return
-        }
-
-        const data = await commerceModel.find({city: token.city})
+        const data = await commerceModel.find({city: city})
 
         if (!data) {
             handleHttpError(res, "NO_COMMERCE_IN_CITY", 404)
